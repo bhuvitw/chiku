@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+.eslintcache
+
+# ML artifacts — tracked by DVC/MLflow, never Git
+data/**
+!data/README.md
+!data/.gitkeep
+*.pt
+*.pth
+*.ckpt
+*.onnx
+mlruns/
+mlartifacts/
+experiments/**/outputs/
+
+# Local object storage (MinIO volume)
+.storage/
+
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/

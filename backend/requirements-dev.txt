@@ -1,0 +1,5 @@
+-r requirements.txt
+pytest>=8.3
+# starlette's TestClient requires httpx2; plain httpx is deprecated there.
+httpx2>=2.0
+ruff>=0.8
