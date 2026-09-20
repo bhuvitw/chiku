@@ -94,8 +94,9 @@ def test_leaked_split_is_rejected_at_construction() -> None:
 
 def test_split_is_deterministic_for_a_seed_and_varies_across_seeds() -> None:
     manifest = make_manifest()
-    assert patient_level_split(manifest, seed=11).test == patient_level_split(manifest, seed=11).test
-    assert patient_level_split(manifest, seed=11).test != patient_level_split(manifest, seed=12).test
+    first = patient_level_split(manifest, seed=11)
+    assert first.test == patient_level_split(manifest, seed=11).test
+    assert first.test != patient_level_split(manifest, seed=12).test
 
 
 def test_row_order_does_not_change_the_split() -> None:

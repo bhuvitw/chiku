@@ -26,7 +26,7 @@ import numpy as np
 
 from ml.data.deid import canonical_id
 from ml.data.manifest import ManifestRow, load_manifest
-from ml.data.splits import SPLIT_NAMES, Split, patient_level_split, split_summary
+from ml.data.splits import SPLIT_NAMES, patient_level_split, split_summary
 from ml.preprocessing.xray import PreprocessConfig, preprocess
 
 _CONFIG: PreprocessConfig | None = None
@@ -93,9 +93,7 @@ def main() -> None:
 
     split = patient_level_split(rows, seed=args.seed)
     split.to_json(out / "split.json")
-    assignment = {
-        patient: name for name in SPLIT_NAMES for patient in split.patients(name)
-    }
+    assignment = {patient: name for name in SPLIT_NAMES for patient in split.patients(name)}
     print(json.dumps(split_summary(split, rows), indent=2))
 
     images = np.lib.format.open_memmap(
