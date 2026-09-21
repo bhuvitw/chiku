@@ -1,16 +1,21 @@
 # ML
 
-Empty until Phase 1. Structure mirrors System Design §29:
+Structure mirrors System Design §29. Phase 1 packages exist; the Phase 4 ones
+land when that phase starts.
 
 ```
 ml/
-├── xray/           # fracture classification (Phase 1)
+├── xray/           # fracture classification (Phase 1) — dataset, augment, model, train
+├── data/           # de-identification, patient-level splits, manifest
+├── preprocessing/  # shared transforms (xray-v1)
+├── evaluation/     # runs against the frozen test split, separate from training
 ├── mri/            # sequence handling, preprocessing (Phase 4)
 ├── segmentation/   # anatomical structures (Phase 4)
-├── classification/ # abnormality models, separate from segmentation (Phase 4)
-├── preprocessing/  # shared transforms
-└── evaluation/     # runs against the frozen test split, separate from training
+└── classification/ # abnormality models, separate from segmentation (Phase 4)
 ```
+
+Baseline results and the served operating point are in the root `README.md`;
+the raw artifact is `experiments/outputs/xray-eval.json`.
 
 Two rules that apply from the first experiment:
 
