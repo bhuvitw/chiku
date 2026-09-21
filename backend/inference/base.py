@@ -22,6 +22,20 @@ from typing import Protocol
 from backend.models.enums import PredictionLabel
 
 
+class ImageQualityError(Exception):
+    """Preprocessing's quality gate refused the image.
+
+    Kept here rather than raised as an `AppError` directly, so a predictor
+    never imports the API's error contract: the analysis service owns the
+    mapping onto `LOW_IMAGE_QUALITY`. `QualityReport.passed` is what produces
+    this (ml/preprocessing/xray.py).
+    """
+
+    def __init__(self, reason: str | None = None) -> None:
+        self.reason = reason or "quality_check_failed"
+        super().__init__(self.reason)
+
+
 @dataclass(frozen=True, slots=True)
 class PredictionResult:
     prediction: PredictionLabel
@@ -104,7 +118,9 @@ def get_predictor() -> Predictor:
     if settings.inference_backend == "torch":
         # Imported here and nowhere else: this is the only line in the
         # backend that may pull torch in, and only the worker takes it.
-        from backend.inference.torch_predictor import TorchPredictor
+        from backend.inference.torch_predictor import load_predictor
 
-        return TorchPredictor(Path(settings.model_checkpoint))
+        # Cached by path: a worker loads 45 MB of weights once per process,
+        # not once per job.
+        return load_predictor(settings.model_checkpoint)
     raise ValueError(f"unknown inference backend: {settings.inference_backend!r}")

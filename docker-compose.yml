@@ -35,6 +35,9 @@ services:
       DATABASE_URL: postgresql+psycopg://chiku:chiku@postgres:5432/chiku
       REDIS_URL: redis://redis:6379/0
       ENVIRONMENT: development
+      # Redis and a worker exist in this stack, so analysis is queued rather
+      # than run inline — which is also why the API image needs no torch.
+      ASYNC_JOBS: "true"
     command: >
       sh -c "alembic upgrade head &&
              uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload"
@@ -42,6 +45,9 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/app/backend
+      - ./ml:/app/ml
+      # Uploads are written here and read by the worker: one shared store.
+      - ./data:/app/data
     depends_on:
       postgres:
         condition: service_healthy
@@ -51,13 +57,21 @@ services:
   worker:
     build:
       context: .
-      dockerfile: docker/backend.Dockerfile
+      dockerfile: docker/worker.Dockerfile
     environment:
       DATABASE_URL: postgresql+psycopg://chiku:chiku@postgres:5432/chiku
       REDIS_URL: redis://redis:6379/0
+      INFERENCE_BACKEND: torch
+      MODEL_CHECKPOINT: /app/experiments/outputs/resnet18-best.pt
+      OPERATING_POINT_PATH: /app/experiments/outputs/xray-eval.json
     command: celery -A backend.workers.celery_app worker --loglevel=info
     volumes:
       - ./backend:/app/backend
+      - ./ml:/app/ml
+      # Checkpoint and evaluation artifact are DVC-tracked, not baked into the
+      # image: `dvc pull` on the host and the worker sees the new weights.
+      - ./experiments:/app/experiments:ro
+      - ./data:/app/data
     depends_on:
       postgres:
         condition: service_healthy

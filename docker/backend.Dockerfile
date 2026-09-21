@@ -10,6 +10,10 @@ RUN pip install --no-cache-dir -r backend/requirements-dev.txt
 
 COPY pyproject.toml alembic.ini ./
 COPY backend/ ./backend/
+# `backend.services.uploads` imports `ml.data.deid` for the de-identification
+# pass, so the API needs the ml package even though it never loads a model.
+# Only the PIL/numpy-level modules are reachable from here — no torch.
+COPY ml/ ./ml/
 
 EXPOSE 8000
 

@@ -17,8 +17,8 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from backend.config import settings
-from backend.errors import AppError, ErrorCode
-from backend.inference import decide, get_predictor
+from backend.errors import USER_FACING_MESSAGE, AppError, ErrorCode
+from backend.inference import ImageQualityError, decide, get_operating_point, get_predictor
 from backend.models import Job, JobStatus, JobType, Prediction, Study, StudyStatus
 
 logger = logging.getLogger(__name__)
@@ -88,15 +88,26 @@ def run_analysis(db: Session, job_id: uuid.UUID) -> Job:
             )
 
         predictor = get_predictor()
+        operating_point = get_operating_point()
         job.progress = 50
         db.commit()
 
-        probability = predictor.probability(path)
+        try:
+            probability = predictor.probability(path)
+        except ImageQualityError as error:
+            # The quality gate refused the image, which is a modelling
+            # outcome with its own user-facing copy — not a crash, and not a
+            # prediction. Fail closed rather than scoring it anyway (PRD §8).
+            raise AppError(
+                ErrorCode.LOW_IMAGE_QUALITY,
+                message=USER_FACING_MESSAGE[ErrorCode.LOW_IMAGE_QUALITY],
+            ) from error
+
         result = decide(
             probability,
-            threshold=settings.decision_threshold,
-            abstain_low=settings.abstention_low,
-            abstain_high=settings.abstention_high,
+            threshold=operating_point.threshold,
+            abstain_low=operating_point.abstain_low,
+            abstain_high=operating_point.abstain_high,
             model_version=predictor.model_version,
         )
 
@@ -109,9 +120,12 @@ def run_analysis(db: Session, job_id: uuid.UUID) -> Job:
                 confidence=result.confidence,
                 reason=result.reason,
                 model_version=result.model_version,
-                threshold=settings.decision_threshold,
-                abstention_low=settings.abstention_low,
-                abstention_high=settings.abstention_high,
+                # Stored per prediction, not read back from settings at display
+                # time: a threshold change must not retroactively rewrite what
+                # an already-delivered result was decided under.
+                threshold=operating_point.threshold,
+                abstention_low=operating_point.abstain_low,
+                abstention_high=operating_point.abstain_high,
             )
         )
         job.status = JobStatus.SUCCEEDED
