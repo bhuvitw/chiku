@@ -1,0 +1,13 @@
+# ML/training dependencies, deliberately separate from backend/requirements.txt:
+# the API container has no reason to carry torch, and CI installs whichever set
+# the job under test actually needs.
+#
+# CI and the laptop both run CPU-only wheels; install those first so pip does
+# not resolve the multi-gigabyte CUDA build:
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+torch>=2.4
+torchvision>=0.19
+numpy>=2.0
+pillow>=11.0
+scikit-learn>=1.5
+mlflow>=2.17

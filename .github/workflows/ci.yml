@@ -6,6 +6,19 @@ on:
   pull_request:
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # Ruff alone, so linting the whole tree costs seconds and does not wait on
+      # a torch install. Config lives in pyproject.toml.
+      - run: pip install ruff
+      - run: ruff check backend ml scripts
+      - run: ruff format --check backend ml scripts
+
   backend:
     runs-on: ubuntu-latest
     services:
@@ -34,9 +47,23 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -r backend/requirements-dev.txt
-      - run: ruff check backend
-      - run: ruff format --check backend
-      - run: pytest
+      # Explicit path, not the pyproject testpaths: this job installs no torch,
+      # so collecting ml/tests here would fail on import.
+      - run: pytest backend/tests
+
+  ml:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      # CPU wheels first, or pip pulls the CUDA build and its several GB of
+      # nvidia-* dependencies onto a runner that has no GPU.
+      - run: pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+      - run: pip install -r ml/requirements-dev.txt
+      - run: pytest ml/tests
 
   frontend:
     runs-on: ubuntu-latest

@@ -9,7 +9,9 @@ from backend.database.base import Base
 from backend.models.enums import Modality, StudyStatus
 
 if TYPE_CHECKING:
+    from backend.models.image import StudyImage
     from backend.models.job import Job
+    from backend.models.prediction import Prediction
     from backend.models.user import User
 
 
@@ -39,4 +41,10 @@ class Study(Base):
     user: Mapped["User"] = relationship(back_populates="studies")
     jobs: Mapped[list["Job"]] = relationship(
         back_populates="study", cascade="all, delete-orphan", order_by="Job.created_at"
+    )
+    images: Mapped[list["StudyImage"]] = relationship(
+        back_populates="study", cascade="all, delete-orphan", order_by="StudyImage.created_at"
+    )
+    predictions: Mapped[list["Prediction"]] = relationship(
+        back_populates="study", cascade="all, delete-orphan", order_by="Prediction.created_at"
     )

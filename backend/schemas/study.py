@@ -20,3 +20,19 @@ class StudyRead(BaseModel):
     status: StudyStatus
     created_at: datetime
     updated_at: datetime
+
+
+class StudyImageRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: uuid.UUID
+    study_id: uuid.UUID
+    original_filename: str | None
+    content_type: str
+    width: int
+    height: int
+    byte_size: int
+    sha256: str
+    created_at: datetime
+    #: `stored_path` is deliberately absent: the server's filesystem layout is
+    #: not the client's business (System Design §25).

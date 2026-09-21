@@ -39,3 +39,12 @@ class JobStatus(enum.StrEnum):
     RUNNING = "RUNNING"
     SUCCEEDED = "SUCCEEDED"
     FAILED = "FAILED"
+
+
+class PredictionLabel(enum.StrEnum):
+    """PRD FR-04 outcomes. `UNABLE_TO_ASSESS` is a first-class result, not an
+    error: the product abstains out loud rather than dressing up a coin flip."""
+
+    POSSIBLE_FRACTURE = "possible_fracture"
+    NO_FRACTURE = "no_fracture"
+    UNABLE_TO_ASSESS = "unable_to_assess"
