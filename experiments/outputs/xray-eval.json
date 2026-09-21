@@ -1,0 +1,226 @@
+{
+  "overall": {
+    "threshold": 0.4184403121471405,
+    "support": 3021,
+    "positives": 2100,
+    "confusion": {
+      "tp": 2014,
+      "fp": 83,
+      "tn": 838,
+      "fn": 86
+    },
+    "sensitivity": 0.959047619047619,
+    "specificity": 0.9098805646036916,
+    "precision": 0.9604196471149261,
+    "f1": 0.9597331427209912,
+    "accuracy": 0.9440582588546839,
+    "auroc": 0.9854100098236906,
+    "auprc": 0.9938660542220841
+  },
+  "calibration": {
+    "brier": 0.04306920132700907,
+    "ece": 0.024663633770862482,
+    "mce": 0.214128989726305,
+    "bins": [
+      {
+        "lower": 0.0,
+        "upper": 0.1,
+        "count": 808,
+        "mean_predicted": 0.019727266213648013,
+        "observed_rate": 0.04950495049504951,
+        "gap": 0.029777684281401495
+      },
+      {
+        "lower": 0.1,
+        "upper": 0.2,
+        "count": 60,
+        "mean_predicted": 0.13937353106836478,
+        "observed_rate": 0.3,
+        "gap": 0.1606264689316352
+      },
+      {
+        "lower": 0.2,
+        "upper": 0.30000000000000004,
+        "count": 36,
+        "mean_predicted": 0.2567948554125097,
+        "observed_rate": 0.4166666666666667,
+        "gap": 0.159871811254157
+      },
+      {
+        "lower": 0.30000000000000004,
+        "upper": 0.4,
+        "count": 16,
+        "mean_predicted": 0.348371010273695,
+        "observed_rate": 0.5625,
+        "gap": 0.214128989726305
+      },
+      {
+        "lower": 0.4,
+        "upper": 0.5,
+        "count": 30,
+        "mean_predicted": 0.45225245555241905,
+        "observed_rate": 0.6,
+        "gap": 0.14774754444758093
+      },
+      {
+        "lower": 0.5,
+        "upper": 0.6000000000000001,
+        "count": 24,
+        "mean_predicted": 0.5369751950105032,
+        "observed_rate": 0.5833333333333334,
+        "gap": 0.0463581383228302
+      },
+      {
+        "lower": 0.6000000000000001,
+        "upper": 0.7000000000000001,
+        "count": 29,
+        "mean_predicted": 0.6462482830573772,
+        "observed_rate": 0.5862068965517241,
+        "gap": 0.06004138650565316
+      },
+      {
+        "lower": 0.7000000000000001,
+        "upper": 0.8,
+        "count": 33,
+        "mean_predicted": 0.7546091278394064,
+        "observed_rate": 0.7878787878787878,
+        "gap": 0.03326966003938148
+      },
+      {
+        "lower": 0.8,
+        "upper": 0.9,
+        "count": 48,
+        "mean_predicted": 0.8602518066763878,
+        "observed_rate": 0.7708333333333334,
+        "gap": 0.08941847334305442
+      },
+      {
+        "lower": 0.9,
+        "upper": 1.0,
+        "count": 1937,
+        "mean_predicted": 0.9937807042757506,
+        "observed_rate": 0.9839958699019101,
+        "gap": 0.009784834373840479
+      }
+    ]
+  },
+  "abstention": {
+    "low": 0.03844031214714033,
+    "high": 0.7984403121471406,
+    "coverage": 0.8664698162729659,
+    "abstained": 407,
+    "selective_sensitivity": 0.9846641988365944,
+    "selective_specificity": 0.94,
+    "abstained_accuracy": 0.7518427518427518
+  },
+  "subgroups": {
+    "cast": {
+      "threshold": 0.4184403121471405,
+      "support": 928,
+      "positives": 898,
+      "confusion": {
+        "tp": 892,
+        "fp": 27,
+        "tn": 3,
+        "fn": 6
+      },
+      "sensitivity": 0.9933184855233853,
+      "specificity": 0.1,
+      "precision": 0.970620239390642,
+      "f1": 0.9818381948266374,
+      "accuracy": 0.9644396551724138,
+      "auroc": 0.8933556050482554,
+      "auprc": 0.9960392312462735
+    },
+    "not_cast": {
+      "threshold": 0.4184403121471405,
+      "support": 2093,
+      "positives": 1202,
+      "confusion": {
+        "tp": 1122,
+        "fp": 56,
+        "tn": 835,
+        "fn": 80
+      },
+      "sensitivity": 0.9334442595673876,
+      "specificity": 0.9371492704826038,
+      "precision": 0.9524617996604414,
+      "f1": 0.9428571428571428,
+      "accuracy": 0.9350215002388915,
+      "auroc": 0.9832919694261901,
+      "auprc": 0.9894933470836345
+    },
+    "metal": {
+      "threshold": 0.4184403121471405,
+      "support": 96,
+      "positives": 84,
+      "confusion": {
+        "tp": 83,
+        "fp": 10,
+        "tn": 2,
+        "fn": 1
+      },
+      "sensitivity": 0.9880952380952381,
+      "specificity": 0.16666666666666666,
+      "precision": 0.8924731182795699,
+      "f1": 0.9378531073446328,
+      "accuracy": 0.8854166666666666,
+      "auroc": 0.9583333333333333,
+      "auprc": 0.9944350182796913
+    },
+    "not_metal": {
+      "threshold": 0.4184403121471405,
+      "support": 2925,
+      "positives": 2016,
+      "confusion": {
+        "tp": 1931,
+        "fp": 73,
+        "tn": 836,
+        "fn": 85
+      },
+      "sensitivity": 0.9578373015873016,
+      "specificity": 0.9196919691969196,
+      "precision": 0.9635728542914171,
+      "f1": 0.9606965174129353,
+      "accuracy": 0.945982905982906,
+      "auroc": 0.9856950228753034,
+      "auprc": 0.9938280855502103
+    }
+  },
+  "selection": {
+    "threshold": 0.4184403121471405,
+    "target_sensitivity": 0.95,
+    "selected_on": "val",
+    "abstention_band": [
+      0.03844031214714033,
+      0.7984403121471406
+    ]
+  },
+  "provenance": {
+    "checkpoint": "experiments/outputs/resnet18-best.pt",
+    "dataset": "GRAZPEDWRI-DX",
+    "preprocess_version": "xray-v1",
+    "split_seed": 20260920,
+    "test_patients": 882,
+    "test_images": 3021
+  },
+  "val_at_operating_point": {
+    "threshold": 0.4184403121471405,
+    "support": 3048,
+    "positives": 2047,
+    "confusion": {
+      "tp": 1945,
+      "fp": 73,
+      "tn": 928,
+      "fn": 102
+    },
+    "sensitivity": 0.9501709819247679,
+    "specificity": 0.9270729270729271,
+    "precision": 0.9638255698711595,
+    "f1": 0.956949569495695,
+    "accuracy": 0.9425853018372703,
+    "auroc": 0.9804989831858419,
+    "auprc": 0.9890295785596519
+  },
+  "val_calibration_ece": 0.028813699467862112
+}

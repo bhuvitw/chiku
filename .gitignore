@@ -30,7 +30,10 @@ data/**
 *.onnx
 mlruns/
 mlartifacts/
-experiments/**/outputs/
+experiments/**/outputs/*
+!experiments/**/outputs/*.dvc
+!experiments/**/outputs/*.json
+!experiments/**/outputs/.gitignore
 
 # Local object storage (MinIO volume)
 .storage/

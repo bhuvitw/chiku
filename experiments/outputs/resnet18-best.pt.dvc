@@ -1,0 +1,5 @@
+outs:
+- md5: 519ab62a9a42cc1e95ec6bb349a0ca42
+  size: 44790795
+  hash: md5
+  path: resnet18-best.pt
